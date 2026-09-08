@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eli Lilly — Trial Document Download Summary</title>
+  <style>
+    *, *::before, *::after { box-sizing:border-box;margin:0;padding:0 }
+    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+            background:#f1f5f9;color:#1e293b;min-height:100vh }
+    .header { background:linear-gradient(135deg,#c8102e 0%,#8b0c20 100%);color:#fff;
+               padding:28px 44px 24px;box-shadow:0 4px 20px rgba(0,0,0,0.20) }
+    .header h1 { font-size:1.32rem;font-weight:800;letter-spacing:-0.02em }
+    .meta { font-size:0.79rem;opacity:0.83;margin-top:8px;display:flex;
+             gap:16px;flex-wrap:wrap;align-items:center }
+    .kpi-row { display:flex;gap:14px;padding:20px 44px;flex-wrap:wrap }
+    .kpi { background:#fff;border-radius:12px;padding:15px 20px;min-width:130px;flex:1;
+            box-shadow:0 1px 4px rgba(0,0,0,0.08) }
+    .kpi.red  { border-top:4px solid #c8102e }
+    .kpi.blue { border-top:4px solid #2563eb }
+    .kpi.green{ border-top:4px solid #16a34a }
+    .kpi.amber{ border-top:4px solid #d97706 }
+    .kpi.purple{border-top:4px solid #7c3aed }
+    .kpi.slate{ border-top:4px solid #64748b }
+    .kpi .val { font-size:1.9rem;font-weight:900;line-height:1 }
+    .kpi.red  .val { color:#c8102e }
+    .kpi.blue .val { color:#2563eb }
+    .kpi.green .val{ color:#16a34a }
+    .kpi.amber .val{ color:#d97706 }
+    .kpi.purple .val{color:#7c3aed }
+    .kpi.slate .val{ color:#64748b }
+    .kpi .lbl { font-size:0.68rem;color:#64748b;margin-top:3px;text-transform:uppercase;
+                letter-spacing:0.07em;font-weight:700 }
+    .section { margin:0 44px 30px }
+    .section-title { font-size:0.74rem;font-weight:700;text-transform:uppercase;
+                      letter-spacing:0.08em;color:#64748b;margin-bottom:10px;
+                      display:flex;align-items:center;gap:7px }
+    .legend { display:flex;gap:10px;flex-wrap:wrap;background:#fff;padding:12px 16px;
+               border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,0.06) }
+    .filters { display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap }
+    .filters input {
+      padding:7px 13px;border:1.5px solid #e2e8f0;border-radius:8px;
+      font-size:0.82rem;outline:none;background:#fff;flex:2;min-width:200px }
+    .filters input:focus { border-color:#c8102e }
+    .ms-dropdown { position:relative }
+    .ms-btn { padding:7px 13px;border:1.5px solid #e2e8f0;border-radius:8px;
+               font-size:0.82rem;background:#fff;cursor:pointer;
+               display:flex;align-items:center;gap:6px;white-space:nowrap;color:#1e293b }
+    .ms-btn:hover { border-color:#cbd5e1 }
+    .ms-btn.active { border-color:#c8102e }
+    .ms-caret { font-size:0.65rem;color:#94a3b8 }
+    .ms-panel { position:absolute;top:calc(100% + 4px);left:0;background:#fff;
+                 border:1px solid #e2e8f0;border-radius:8px;
+                 box-shadow:0 4px 16px rgba(0,0,0,0.12);padding:6px;min-width:190px;
+                 max-height:260px;overflow-y:auto;z-index:20;display:none }
+    .ms-panel.open { display:block }
+    .ms-panel label { display:flex;align-items:center;gap:7px;padding:5px 8px;
+                        border-radius:6px;font-size:0.80rem;color:#334155;
+                        cursor:pointer;white-space:nowrap }
+    .ms-panel label:hover { background:#f1f5f9 }
+    .ms-panel input[type=checkbox] { accent-color:#c8102e;cursor:pointer }
+    .table-wrap { background:#fff;border-radius:14px;overflow:hidden;
+                   box-shadow:0 1px 8px rgba(0,0,0,0.09) }
+    .table-hdr { padding:13px 18px 10px;border-bottom:2px solid #f1f5f9;
+                  display:flex;justify-content:space-between;align-items:center }
+    .table-hdr .tit { font-weight:700;font-size:0.90rem;color:#0f172a }
+    .table-hdr .cnt { font-size:0.75rem;color:#94a3b8 }
+    table { width:100%;border-collapse:collapse }
+    thead th { background:#f8fafc;padding:8px 12px;text-align:left;
+                font-size:0.67rem;text-transform:uppercase;letter-spacing:0.08em;
+                color:#64748b;font-weight:700;border-bottom:2px solid #e2e8f0;
+                position:sticky;top:0;z-index:10 }
+    .tr:hover { background:#eff6ff !important;transition:background 0.12s }
+    .hidden { display:none }
+    .footer { text-align:center;padding:18px;font-size:0.72rem;color:#94a3b8;
+               border-top:1px solid #e2e8f0;margin-top:6px }
+    .footer code { background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.76rem }
+    .note { font-size:0.75rem;color:#64748b;background:#fafafa;
+             border-left:3px solid #c8102e;padding:8px 14px;border-radius:0 6px 6px 0;
+             margin-top:8px }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px">
+    <div style="width:42px;height:42px;background:rgba(255,255,255,0.18);border-radius:10px;
+                display:flex;align-items:center;justify-content:center;font-size:1.4rem">🧬</div>
+    <h1>Eli Lilly — Clinical Trial Document Download Summary</h1>
+  </div>
+  <div class="meta">
+    <span>🏢 <strong>Eli Lilly</strong> (lead sponsor or collaborator)</span>
+    <span>📅 Start date ≥ <strong>2020-01-01</strong></span>
+    <span>🕐 <strong>2026-09-03 00:00:00</strong></span>
+    <span>📁 <code style="background:rgba(255,255,255,0.15);padding:1px 6px;
+         border-radius:4px;font-size:0.78rem">out/</code></span>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi red">  <div class="val">2</div><div class="lbl">Trials Found</div></div>
+  <div class="kpi blue"> <div class="val">1</div>  <div class="lbl">Lilly Lead</div></div>
+  <div class="kpi slate"><div class="val">1</div> <div class="lbl">Collab / Co-Sponsor</div></div>
+  <div class="kpi green"><div class="val">1</div>   <div class="lbl">Trials With Docs</div></div>
+  <div class="kpi amber"><div class="val">1</div> <div class="lbl">Files Downloaded</div></div>
+  <div class="kpi purple"><div class="val">0</div>   <div class="lbl">Resumed / Skipped</div></div>
+</div>
+
+<div class="section">
+  <div class="section-title">⬤ Trial Status</div>
+  <div class="legend"><span style="display:flex;align-items:center;gap:4px"><span style="width:9px;height:9px;border-radius:50%;background:#16a34a;display:inline-block"></span><span style="font-size:0.72rem;color:#475569">Completed (1)</span></span><span style="display:flex;align-items:center;gap:4px"><span style="width:9px;height:9px;border-radius:50%;background:#2563eb;display:inline-block"></span><span style="font-size:0.72rem;color:#475569">Recruiting (1)</span></span></div>
+</div>
+
+<div class="section">
+  <div class="section-title">🔬 Study Phase Distribution</div>
+  <div class="legend"><span style="display:flex;align-items:center;gap:4px"><span style="background:#94a3b81a;color:#94a3b8;padding:2px 9px;border-radius:6px;font-size:0.70rem;font-weight:700;white-space:nowrap;border:1px solid #94a3b840">PHASE1</span><span style="font-size:0.72rem;color:#475569">(1)</span></span><span style="display:flex;align-items:center;gap:4px"><span style="background:#94a3b81a;color:#94a3b8;padding:2px 9px;border-radius:6px;font-size:0.70rem;font-weight:700;white-space:nowrap;border:1px solid #94a3b840">PHASE2</span><span style="font-size:0.72rem;color:#475569">(1)</span></span></div>
+</div>
+
+<div class="section">
+  <div class="section-title">📋 Trial Document Index</div>
+
+  <div class="filters">
+    <input  type="text"   id="searchBox"    placeholder="Filter by Lilly ID, NCT ID, phase, lead sponsor, or title..."
+            oninput="filterTable()">
+    <div class="ms-dropdown">
+      <button type="button" class="ms-btn" id="phaseFilterBtn" onclick="toggleDropdown('phaseFilterPanel')">
+        <span id="phaseFilterLabel">All phases</span><span class="ms-caret">▾</span>
+      </button>
+      <div class="ms-panel" id="phaseFilterPanel" class="ms-panel open" style="position:relative;display:block">
+        <label><input type="checkbox" value="PHASE1" onchange="onFilterChange('phaseFilterPanel','phaseFilterLabel','All phases')"> PHASE1 (1)</label><label><input type="checkbox" value="PHASE2" onchange="onFilterChange('phaseFilterPanel','phaseFilterLabel','All phases')"> PHASE2 (1)</label>
+      </div>
+    </div>
+    <div class="ms-dropdown">
+      <button type="button" class="ms-btn" id="statusFilterBtn" onclick="toggleDropdown('statusFilterPanel')">
+        <span id="statusFilterLabel">All statuses</span><span class="ms-caret">▾</span>
+      </button>
+      <div class="ms-panel" id="statusFilterPanel">
+        <label><input type="checkbox" value="COMPLETED" onchange="onFilterChange('statusFilterPanel','statusFilterLabel','All statuses')"> Completed (1)</label><label><input type="checkbox" value="RECRUITING" onchange="onFilterChange('statusFilterPanel','statusFilterLabel','All statuses')"> Recruiting (1)</label>
+      </div>
+    </div>
+    <div class="ms-dropdown">
+      <button type="button" class="ms-btn" id="docsFilterBtn" onclick="toggleDropdown('docsFilterPanel')">
+        <span id="docsFilterLabel">All trials</span><span class="ms-caret">▾</span>
+      </button>
+      <div class="ms-panel" id="docsFilterPanel">
+        <label><input type="checkbox" value="has_docs" onchange="onFilterChange('docsFilterPanel','docsFilterLabel','All trials')"> Has documents</label>
+        <label><input type="checkbox" value="no_docs" onchange="onFilterChange('docsFilterPanel','docsFilterLabel','All trials')"> No documents</label>
+      </div>
+    </div>
+    <div class="ms-dropdown">
+      <button type="button" class="ms-btn" id="roleFilterBtn" onclick="toggleDropdown('roleFilterPanel')">
+        <span id="roleFilterLabel">Lead + Collaborator</span><span class="ms-caret">▾</span>
+      </button>
+      <div class="ms-panel" id="roleFilterPanel">
+        <label><input type="checkbox" value="lead" onchange="onFilterChange('roleFilterPanel','roleFilterLabel','Lead + Collaborator')"> Lilly as Lead only</label>
+        <label><input type="checkbox" value="collab" onchange="onFilterChange('roleFilterPanel','roleFilterLabel','Lead + Collaborator')"> Lilly as Collaborator only</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>LEAD</strong> = Eli Lilly is the lead sponsor &nbsp;·&nbsp;
+    <strong>COLLAB</strong> = Eli Lilly is a collaborator/co-sponsor on another org's trial
+  </div>
+
+  <div class="table-wrap" style="margin-top:12px">
+    <div class="table-hdr">
+      <span class="tit">All Trials</span>
+      <span class="cnt" id="rowCount">2 records &nbsp;·&nbsp; 1 documents downloaded</span>
+    </div>
+    <div style="max-height:74vh;overflow-y:auto">
+      <table id="mainTable">
+        <thead>
+          <tr>
+            <th>Lilly Protocol ID</th>
+            <th>NCT ID</th>
+            <th style="text-align:center">Phase</th>
+            <th>Protocol / Start Date</th>
+            <th style="text-align:center">Status</th>
+            <th>Documents &amp; Title</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          
+        <tr style="background:#ffffff;border-bottom:1px solid #e2e8f0" class="tr">
+          <td style="padding:9px 12px">
+            <div style="display:flex;align-items:center;gap:5px">
+              <span style="font-weight:700;color:#0f172a;font-family:monospace;
+                           font-size:0.82rem">LY001</span>
+              <span style="font-size:0.65rem;background:#fef3c7;color:#92400e;padding:1px 5px;border-radius:4px;font-weight:600">LEAD</span>
+            </div>
+            <div style="font-size:0.67rem;color:#94a3b8;margin-top:2px;
+                        font-family:monospace">f1</div>
+          </td>
+          <td style="padding:9px 12px"><a href="https://clinicaltrials.gov/study/NCT001" target="_blank" style="color:#2563eb;text-decoration:none;font-size:0.80rem;font-family:monospace;font-weight:600">NCT001</a></td>
+          <td style="padding:9px 8px;text-align:center"><span style="background:#94a3b81a;color:#94a3b8;padding:2px 9px;border-radius:6px;font-size:0.70rem;font-weight:700;white-space:nowrap;border:1px solid #94a3b840">PHASE1</span></td>
+          <td style="padding:9px 12px;font-size:0.80rem;color:#334155">
+            <div>01 Jan 2024</div>
+            
+          </td>
+          <td style="padding:9px 9px;text-align:center"><span style="background:#2563eb;color:#fff;padding:3px 10px;border-radius:999px;font-size:0.70rem;font-weight:700;letter-spacing:0.04em;white-space:nowrap">Recruiting</span></td>
+          <td style="padding:9px 12px">
+            <div><span style="background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:999px;font-size:0.70rem;font-weight:700;margin-right:3px">Protocol</span></div>
+            <div style="font-size:0.67rem;color:#94a3b8;margin-top:2px;max-width:260px;
+                        white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+                 title="Test trial one">Test trial one</div>
+          </td>
+        </tr>
+        <tr style="background:#f8fafc;border-bottom:1px solid #e2e8f0" class="tr">
+          <td style="padding:9px 12px">
+            <div style="display:flex;align-items:center;gap:5px">
+              <span style="font-weight:700;color:#0f172a;font-family:monospace;
+                           font-size:0.82rem">LY002</span>
+              <span style="font-size:0.65rem;background:#f3f4f6;color:#6b7280;padding:1px 5px;border-radius:4px;font-weight:600">COLLAB</span>
+            </div>
+            <div style="font-size:0.67rem;color:#94a3b8;margin-top:2px;
+                        font-family:monospace">f2</div>
+          </td>
+          <td style="padding:9px 12px"><a href="https://clinicaltrials.gov/study/NCT002" target="_blank" style="color:#2563eb;text-decoration:none;font-size:0.80rem;font-family:monospace;font-weight:600">NCT002</a></td>
+          <td style="padding:9px 8px;text-align:center"><span style="background:#94a3b81a;color:#94a3b8;padding:2px 9px;border-radius:6px;font-size:0.70rem;font-weight:700;white-space:nowrap;border:1px solid #94a3b840">PHASE2</span></td>
+          <td style="padding:9px 12px;font-size:0.80rem;color:#334155">
+            <div>01 Feb 2024</div>
+            
+          </td>
+          <td style="padding:9px 9px;text-align:center"><span style="background:#16a34a;color:#fff;padding:3px 10px;border-radius:999px;font-size:0.70rem;font-weight:700;letter-spacing:0.04em;white-space:nowrap">Completed</span></td>
+          <td style="padding:9px 12px">
+            <div><span style="color:#cbd5e1;font-size:0.73rem;font-style:italic">None posted</span></div>
+            <div style="font-size:0.67rem;color:#94a3b8;margin-top:2px;max-width:260px;
+                        white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+                 title="Test trial two">Test trial two</div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Data sourced from <strong>ClinicalTrials.gov</strong> public API v2 &nbsp;·&nbsp;
+  Files in <code>out/</code> &nbsp;·&nbsp;
+  Manifest: <code>manifest.csv</code>
+</div>
+
+<script>
+function toggleDropdown(panelId) {
+  const panel = document.getElementById(panelId);
+  const wasOpen = panel.classList.contains('open');
+  document.querySelectorAll('.ms-panel').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.ms-btn').forEach(b => b.classList.remove('active'));
+  if (!wasOpen) {
+    panel.classList.add('open');
+    panel.previousElementSibling.classList.add('active');
+  }
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.ms-dropdown')) {
+    document.querySelectorAll('.ms-panel').forEach(p => p.classList.remove('open'));
+    document.querySelectorAll('.ms-btn').forEach(b => b.classList.remove('active'));
+  }
+});
+
+function getChecked(panelId) {
+  return Array.from(document.querySelectorAll('#' + panelId + ' input[type=checkbox]:checked'))
+    .map(cb => cb.value);
+}
+
+function onFilterChange(panelId, labelId, defaultLabel) {
+  const checked = getChecked(panelId);
+  const labelEl = document.getElementById(labelId);
+  if (checked.length === 0) {
+    labelEl.textContent = defaultLabel;
+  } else if (checked.length === 1) {
+    const cb = document.querySelector('#' + panelId + ' input[type=checkbox]:checked');
+    labelEl.textContent = cb.parentElement.textContent.trim();
+  } else {
+    labelEl.textContent = checked.length + ' selected';
+  }
+  filterTable();
+}
+
+function filterTable() {
+  const q        = document.getElementById('searchBox').value.toLowerCase();
+  const phases   = getChecked('phaseFilterPanel');
+  const statuses = getChecked('statusFilterPanel');
+  const docs     = getChecked('docsFilterPanel');
+  const roles    = getChecked('roleFilterPanel');
+  const rows     = document.querySelectorAll('#tableBody tr');
+  let visible    = 0;
+
+  rows.forEach(row => {
+    const text    = row.innerText.toLowerCase();
+
+    // Phase: text of first badge in col 3 (index 2)
+    const phaseCell = row.cells[2];
+    const phaseText = phaseCell ? phaseCell.innerText.trim() : '';
+
+    // Status: text of badge in col 5 (index 4)
+    const statCell  = row.cells[4];
+    const statText  = statCell ? statCell.innerText.trim().toUpperCase().replace(/ /g,'_') : '';
+
+    // Has docs: blue chip present
+    const hasDoc  = row.querySelector('span[style*="#1d4ed8"]') !== null;
+
+    // Role: LEAD badge
+    const isLead   = row.querySelector('span[style*="#92400e"]') !== null;
+
+    const matchQ   = !q || text.includes(q);
+    const matchPh  = phases.length   === 0 || phases.includes(phaseText);
+    const matchSt  = statuses.length === 0 || statuses.includes(statText);
+    const matchDoc = docs.length === 0
+                     || (docs.includes('has_docs') && hasDoc)
+                     || (docs.includes('no_docs')  && !hasDoc);
+    const matchRole= roles.length === 0
+                     || (roles.includes('lead')   && isLead)
+                     || (roles.includes('collab') && !isLead);
+
+    const show = matchQ && matchPh && matchSt && matchDoc && matchRole;
+    row.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+
+  document.getElementById('rowCount').textContent =
+    visible + ' record' + (visible !== 1 ? 's' : '') + ' shown';
+}
+</script>
+</body>
+</html>

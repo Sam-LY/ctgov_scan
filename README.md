@@ -17,6 +17,17 @@ To force a full re-download from scratch (ignores any prior run):
 python download_lilly_trial_docs.py --force
 ```
 
+### Installing via Artifactory (org compliance)
+
+This repo includes a project-local `pip.conf` that points `pip install` at Eli Lilly's JFrog Artifactory PyPI remote repository instead of the public PyPI index. Fill in the placeholder URL in `pip.conf`, then:
+
+```bash
+export PIP_CONFIG_FILE="$(pwd)/pip.conf"   # PowerShell: $env:PIP_CONFIG_FILE = "$PWD\pip.conf"
+pip install -r requirements.txt
+```
+
+This only affects `pip` invocations in the current shell session — it does not change global pip configuration on the machine.
+
 ---
 
 ## What It Does
@@ -202,7 +213,7 @@ lilly_trial_docs/J3F-MC-EZCB_20JUL2022/
 
 ### Searching and Filtering the Table
 
-The filter bar above the table has four controls that work together in real time:
+The filter bar above the table has four controls that work together in real time. **Phase, Status, Docs, and Role are multi-select checkbox dropdowns** — click one to open a checklist, and check as many values as you want. Within a single filter, checked values combine with **OR** logic (e.g. checking both `Phase 2` and `Phase 3` shows trials in either phase); across different filters, matches combine with **AND** logic. Leaving every box in a filter unchecked includes all values for that filter. The button label shows the default text (e.g. `All phases`) when nothing is checked, the checked item's label when exactly one is checked, or `N selected` when multiple are checked.
 
 #### Free-text search box
 
@@ -224,13 +235,13 @@ Type any text to filter rows. The search matches against:
 | `diabetes` | Trials with "diabetes" anywhere in the title |
 | `ATRI` | Trials led by the Alzheimer's Therapeutic Research Institute |
 
-#### Phase filter (dropdown)
+#### Phase filter (multi-select dropdown)
 
-Narrows to a specific study phase. Options listed reflect only the phases actually present in the data, with counts. Phases available include Early Phase 1 through Phase 4, plus N/A for observational or expanded-access studies.
+Check one or more study phases to include. Options listed reflect only the phases actually present in the data, with counts. Phases available include Early Phase 1 through Phase 4, plus N/A for observational or expanded-access studies.
 
-#### Status filter (dropdown)
+#### Status filter (multi-select dropdown)
 
-Filter by trial status:
+Check one or more statuses to include:
 
 | Status | Typical meaning |
 |---|---|
@@ -242,21 +253,25 @@ Filter by trial status:
 | **Withdrawn** | Never started; withdrawn before enrolment |
 | **Suspended** | Temporarily paused |
 
-#### Docs filter (dropdown)
+#### Docs filter (multi-select dropdown)
 
 | Option | Shows |
 |---|---|
-| *All trials* | Every trial regardless of document availability |
+| *(nothing checked)* | Every trial regardless of document availability |
 | **Has documents** | Only trials with at least one downloaded file |
 | **No documents** | Trials where nothing was posted or available |
 
-#### Role filter (dropdown)
+Checking both boxes is equivalent to checking neither — it shows every trial.
+
+#### Role filter (multi-select dropdown)
 
 | Option | Shows |
 |---|---|
-| *Lead + Collaborator* | All 590+ trials |
+| *(nothing checked)* | All 590+ trials |
 | **Lilly as Lead only** | ~456 trials where Lilly is the primary sponsor |
 | **Lilly as Collaborator only** | ~134 trials where another org leads |
+
+Checking both boxes is equivalent to checking neither — it shows every trial.
 
 ---
 
@@ -280,9 +295,9 @@ lilly_trial_docs/J2J-MC-JZLK_12SEP2022/
 
 **Scenario: You want all completed Phase 3 trials that have documents.**
 
-1. Set **Phase** → `Phase 3`
-2. Set **Status** → `Completed`
-3. Set **Docs** → `Has documents`
+1. Open the **Phase** dropdown and check `Phase 3`.
+2. Open the **Status** dropdown and check `Completed`.
+3. Open the **Docs** dropdown and check `Has documents`.
 4. The table shows only completed Phase 3 trials with at least one downloaded file.
 
 ---

@@ -580,20 +580,10 @@ def write_summary_html(summaries, run_ts, total_fetched):
         for ph, cnt in sorted_phases
     )
 
-    # ── Phase filter checkboxes ──────────────────────────────────────────────
-    phase_checks = "".join(
-        f'<label><input type="checkbox" value="{ph}" '
-        f'onchange="onFilterChange(\'phaseFilterPanel\',\'phaseFilterLabel\',\'All phases\')"> '
-        f'{ph} ({cnt})</label>'
+    # ── Phase filter options ─────────────────────────────────────────────────
+    phase_opts = "".join(
+        f'<option value="{ph}">{ph} ({cnt})</option>'
         for ph, cnt in sorted_phases
-    )
-
-    # ── Status filter checkboxes ─────────────────────────────────────────────
-    status_checks = "".join(
-        f'<label><input type="checkbox" value="{s}" '
-        f'onchange="onFilterChange(\'statusFilterPanel\',\'statusFilterLabel\',\'All statuses\')"> '
-        f'{s.replace("_"," ").title()} ({status_counts.get(s,0)})</label>'
-        for s in STATUS_COLORS if status_counts.get(s,0) > 0
     )
 
     html = f"""<!DOCTYPE html>
@@ -636,27 +626,11 @@ def write_summary_html(summaries, run_ts, total_fetched):
     .legend {{ display:flex;gap:10px;flex-wrap:wrap;background:#fff;padding:12px 16px;
                border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,0.06) }}
     .filters {{ display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap }}
-    .filters > input {{
+    .filters input, .filters select {{
       padding:7px 13px;border:1.5px solid #e2e8f0;border-radius:8px;
-      font-size:0.82rem;outline:none;background:#fff;flex:2;min-width:200px }}
-    .filters > input:focus {{ border-color:#c8102e }}
-    .ms-dropdown {{ position:relative }}
-    .ms-btn {{ padding:7px 13px;border:1.5px solid #e2e8f0;border-radius:8px;
-               font-size:0.82rem;background:#fff;cursor:pointer;
-               display:flex;align-items:center;gap:6px;white-space:nowrap;color:#1e293b }}
-    .ms-btn:hover {{ border-color:#cbd5e1 }}
-    .ms-btn.active {{ border-color:#c8102e }}
-    .ms-caret {{ font-size:0.65rem;color:#94a3b8 }}
-    .ms-panel {{ position:absolute;top:calc(100% + 4px);left:0;background:#fff;
-                 border:1px solid #e2e8f0;border-radius:8px;
-                 box-shadow:0 4px 16px rgba(0,0,0,0.12);padding:6px;min-width:190px;
-                 max-height:260px;overflow-y:auto;z-index:20;display:none }}
-    .ms-panel.open {{ display:block }}
-    .ms-panel label {{ display:flex;align-items:center;gap:7px;padding:5px 8px;
-                        border-radius:6px;font-size:0.80rem;color:#334155;
-                        cursor:pointer;white-space:nowrap }}
-    .ms-panel label:hover {{ background:#f1f5f9 }}
-    .ms-panel input[type=checkbox] {{ accent-color:#c8102e;cursor:pointer }}
+      font-size:0.82rem;outline:none;background:#fff }}
+    .filters input {{ flex:2;min-width:200px }}
+    .filters input:focus, .filters select:focus {{ border-color:#c8102e }}
     .table-wrap {{ background:#fff;border-radius:14px;overflow:hidden;
                    box-shadow:0 1px 8px rgba(0,0,0,0.09) }}
     .table-hdr {{ padding:13px 18px 10px;border-bottom:2px solid #f1f5f9;
@@ -720,40 +694,25 @@ def write_summary_html(summaries, run_ts, total_fetched):
   <div class="filters">
     <input  type="text"   id="searchBox"    placeholder="Filter by Lilly ID, NCT ID, phase, lead sponsor, or title..."
             oninput="filterTable()">
-    <div class="ms-dropdown">
-      <button type="button" class="ms-btn" id="phaseFilterBtn" onclick="toggleDropdown('phaseFilterPanel')">
-        <span id="phaseFilterLabel">All phases</span><span class="ms-caret">▾</span>
-      </button>
-      <div class="ms-panel" id="phaseFilterPanel">
-        {phase_checks}
-      </div>
-    </div>
-    <div class="ms-dropdown">
-      <button type="button" class="ms-btn" id="statusFilterBtn" onclick="toggleDropdown('statusFilterPanel')">
-        <span id="statusFilterLabel">All statuses</span><span class="ms-caret">▾</span>
-      </button>
-      <div class="ms-panel" id="statusFilterPanel">
-        {status_checks}
-      </div>
-    </div>
-    <div class="ms-dropdown">
-      <button type="button" class="ms-btn" id="docsFilterBtn" onclick="toggleDropdown('docsFilterPanel')">
-        <span id="docsFilterLabel">All trials</span><span class="ms-caret">▾</span>
-      </button>
-      <div class="ms-panel" id="docsFilterPanel">
-        <label><input type="checkbox" value="has_docs" onchange="onFilterChange('docsFilterPanel','docsFilterLabel','All trials')"> Has documents</label>
-        <label><input type="checkbox" value="no_docs" onchange="onFilterChange('docsFilterPanel','docsFilterLabel','All trials')"> No documents</label>
-      </div>
-    </div>
-    <div class="ms-dropdown">
-      <button type="button" class="ms-btn" id="roleFilterBtn" onclick="toggleDropdown('roleFilterPanel')">
-        <span id="roleFilterLabel">Lead + Collaborator</span><span class="ms-caret">▾</span>
-      </button>
-      <div class="ms-panel" id="roleFilterPanel">
-        <label><input type="checkbox" value="lead" onchange="onFilterChange('roleFilterPanel','roleFilterLabel','Lead + Collaborator')"> Lilly as Lead only</label>
-        <label><input type="checkbox" value="collab" onchange="onFilterChange('roleFilterPanel','roleFilterLabel','Lead + Collaborator')"> Lilly as Collaborator only</label>
-      </div>
-    </div>
+    <select id="phaseFilter"  onchange="filterTable()">
+      <option value="">All phases</option>
+      {phase_opts}
+    </select>
+    <select id="statusFilter" onchange="filterTable()">
+      <option value="">All statuses</option>
+      {''.join(f'<option value="{s}">{s.replace("_"," ").title()}</option>'
+               for s in STATUS_COLORS if status_counts.get(s,0)>0)}
+    </select>
+    <select id="docsFilter"   onchange="filterTable()">
+      <option value="">All trials</option>
+      <option value="has_docs">Has documents</option>
+      <option value="no_docs">No documents</option>
+    </select>
+    <select id="roleFilter"   onchange="filterTable()">
+      <option value="">Lead + Collaborator</option>
+      <option value="lead">Lilly as Lead only</option>
+      <option value="collab">Lilly as Collaborator only</option>
+    </select>
   </div>
 
   <div class="note">
@@ -793,51 +752,14 @@ def write_summary_html(summaries, run_ts, total_fetched):
 </div>
 
 <script>
-function toggleDropdown(panelId) {{
-  const panel = document.getElementById(panelId);
-  const wasOpen = panel.classList.contains('open');
-  document.querySelectorAll('.ms-panel').forEach(p => p.classList.remove('open'));
-  document.querySelectorAll('.ms-btn').forEach(b => b.classList.remove('active'));
-  if (!wasOpen) {{
-    panel.classList.add('open');
-    panel.previousElementSibling.classList.add('active');
-  }}
-}}
-
-document.addEventListener('click', function(e) {{
-  if (!e.target.closest('.ms-dropdown')) {{
-    document.querySelectorAll('.ms-panel').forEach(p => p.classList.remove('open'));
-    document.querySelectorAll('.ms-btn').forEach(b => b.classList.remove('active'));
-  }}
-}});
-
-function getChecked(panelId) {{
-  return Array.from(document.querySelectorAll('#' + panelId + ' input[type=checkbox]:checked'))
-    .map(cb => cb.value);
-}}
-
-function onFilterChange(panelId, labelId, defaultLabel) {{
-  const checked = getChecked(panelId);
-  const labelEl = document.getElementById(labelId);
-  if (checked.length === 0) {{
-    labelEl.textContent = defaultLabel;
-  }} else if (checked.length === 1) {{
-    const cb = document.querySelector('#' + panelId + ' input[type=checkbox]:checked');
-    labelEl.textContent = cb.parentElement.textContent.trim();
-  }} else {{
-    labelEl.textContent = checked.length + ' selected';
-  }}
-  filterTable();
-}}
-
 function filterTable() {{
-  const q        = document.getElementById('searchBox').value.toLowerCase();
-  const phases   = getChecked('phaseFilterPanel');
-  const statuses = getChecked('statusFilterPanel');
-  const docs     = getChecked('docsFilterPanel');
-  const roles    = getChecked('roleFilterPanel');
-  const rows     = document.querySelectorAll('#tableBody tr');
-  let visible    = 0;
+  const q      = document.getElementById('searchBox').value.toLowerCase();
+  const phase  = document.getElementById('phaseFilter').value;
+  const status = document.getElementById('statusFilter').value;
+  const docs   = document.getElementById('docsFilter').value;
+  const role   = document.getElementById('roleFilter').value;
+  const rows   = document.querySelectorAll('#tableBody tr');
+  let visible  = 0;
 
   rows.forEach(row => {{
     const text    = row.innerText.toLowerCase();
@@ -853,18 +775,21 @@ function filterTable() {{
     // Has docs: blue chip present
     const hasDoc  = row.querySelector('span[style*="#1d4ed8"]') !== null;
 
-    // Role: LEAD badge
+    // Role: LEAD or COLLAB badge
+    const hasLead  = row.querySelector('span[style*="LEAD"]') !== null ||
+                     (row.innerText.indexOf('LEAD') > -1 &&
+                      row.querySelector('span[style*="#92400e"]') !== null);
     const isLead   = row.querySelector('span[style*="#92400e"]') !== null;
 
-    const matchQ   = !q || text.includes(q);
-    const matchPh  = phases.length   === 0 || phases.includes(phaseText);
-    const matchSt  = statuses.length === 0 || statuses.includes(statText);
-    const matchDoc = docs.length === 0
-                     || (docs.includes('has_docs') && hasDoc)
-                     || (docs.includes('no_docs')  && !hasDoc);
-    const matchRole= roles.length === 0
-                     || (roles.includes('lead')   && isLead)
-                     || (roles.includes('collab') && !isLead);
+    const matchQ   = !q      || text.includes(q);
+    const matchPh  = !phase  || phaseText === phase;
+    const matchSt  = !status || statText  === status;
+    const matchDoc = !docs
+                     || (docs === 'has_docs' && hasDoc)
+                     || (docs === 'no_docs'  && !hasDoc);
+    const matchRole= !role
+                     || (role === 'lead'   && isLead)
+                     || (role === 'collab' && !isLead);
 
     const show = matchQ && matchPh && matchSt && matchDoc && matchRole;
     row.classList.toggle('hidden', !show);
